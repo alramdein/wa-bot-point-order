@@ -5,7 +5,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	// Load environment variables from .env file
+	err := godotenv.Load("../.env")
+	if err != nil {
+		fmt.Println("Error loading .env file:", err)
+	}
+}
 
 // Define message structure
 type ButtonMessage struct {
@@ -24,7 +35,7 @@ func sendWhatsAppMessage() {
 
 	// Create the message with buttons
 	message := ButtonMessage{
-		To:      "6281234567890", // Replace with recipient number
+		To:      os.Getenv("RECIPIENT_NUMBER"), // Replace with recipient number
 		MsgType: "interactive",
 		Body:    "Choose an option below:",
 		Buttons: []struct {
